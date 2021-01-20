@@ -7,18 +7,26 @@ and can find new ways to simplify complex problems.
 
 ## ***LANGUAGES***
 -JavaScript 1.8.5
+
 -Node.JS 14.15.4 LTS
 
 
 ## ***USING THE BOT***
 
 To run/test the script, you will need:
+
 -A Discord bot which can be created from the Discord website - https://discord.com/developers
+
 -Node.JS - https://nodejs.org/en/download/
+
 -Node packages:
+
   -Cheerio
+  
   -request
+ 
   -Discord.js
+  
 Node Packages are installed using npm install packagename in command prompt e.g. npm install Discord.js
 
 For simplicity, I recommend making a bot folder in C:\Users\username\Documents\botname.
@@ -30,7 +38,6 @@ Also, place the JavaScript file in the C:\Users\username\Documents\botname folde
 Run it from the command prompt using node randombot.js once navigated to the botname folder.
   
 
-Uses Discord.js, Cheerio and request to let a user request a random fact and scrape it from a website.
 
 ## ***LICENSING AND COMMENTS***
 
