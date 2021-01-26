@@ -4,7 +4,7 @@ const discord = require('discord.js');
 const botClient = new discord.Client();
 
 
-botClient.login("PUT BOT TOKEN HERE");
+botClient.login("ENTER BOT TOKEN HERE");
 
 botClient.on('ready', () =>{
 	console.log(`${botClient.user.tag} has logged in`)
@@ -29,8 +29,24 @@ botClient.on('message', async function(message){
 
 		const animalUrl = ('https://results.dogpile.com/serp?qc=images&q=' + animalArray[numberRandAn] + '&page=' + numberRandPg + '&sc=2PJid7PeMHmG20');
 		animalSearch(animalUrl);
+		// Random animal search
+	}
 
-		// Chooses a random animal from the array and a random page to pick the image from and puts the choices into an array
+	if(isValidCommand(message, "urlshorten")){
+		let messageArr = message.content.split(" ");
+		let url = ("https://is.gd/create.php?format=simple&url=" + messageArr[1]);
+		console.log(url);
+		urlShorten(url);
+		/* Shortens a url using the is gd website.
+		I did think about using the node package but decided
+		against it to keep to bot as simple as possible. */
+	}
+
+	if(isValidCommand(message, "piglatin")){
+		let messageArr = message.content.split(" ");
+		console.log(messageArr);
+		translatePigLatin(messageArr);
+		// Translates a statement into Pig Latin xD
 	}
 
 	function factSearch(url){
@@ -77,19 +93,69 @@ request(options, function(error, response, responseBody){
 	var links = $(".image a.link");
 	var urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href"));
 	let channelResponse = urls[Math.floor(Math.random() * urls.length)];
-	/* picks a random url from the urls given from the webscrape,
-	and makes sure it is not undefined */
 	console.log(channelResponse);
 
 	if(channelResponse === undefined){
 		animalSearch(animalUrl);
 	}else{
 	message.channel.send(channelResponse);
-	}
+	} // Searches for an animal image, loops function if match is undefined.
 })
-
 }
-})
+
+function urlShorten(url){
+	var options = {
+	url: url,
+	method: "GET",
+	headers: {
+		"Accept":"text/html",
+		"User-agent":"Chrome"
+	}
+};
+request(options, function(error, response, responseBody){
+		if(error){
+		return console.log("An error has occured");
+		message.channel.send("An error has occured.");
+	}
+	$ = cheerio.load(responseBody);
+	let shortenedUrl = $("body").text();
+	message.reply(shortenedUrl); // Gets the shortened URL from the is.gd website.
+
+});
+}
+
+function translatePigLatin(messageArr) {
+
+let newArr = [];
+
+for(i = 1; i < messageArr.length; i++){
+ let str = messageArr[i]
+  let strSingle = str.match(/\w/g);
+  let strFirst = strSingle[0].match(/[aeiou]/i);
+  let strStart = str.match(/[^aeiou]+/).join("");
+  let strStartValue = strStart.match(/\w/g);
+
+  if(strFirst == null){
+    strSingle.push(strStart)
+    strSingle.splice(0, strStart.length);
+    strSingle.push("a","y")
+    newStr = strSingle.join("");
+    console.log(newStr)
+    newArr.push(newStr);
+  } else if(strStart !== null) {
+    newArr.push(str + "way");
+	}
+  }
+
+  console.log(newArr);
+  let pigTranslate = newArr.join(" ");
+  message.channel.send(pigTranslate);
+
+  // Translating to pig latin function
+}
+});
+
+
 
 
 
